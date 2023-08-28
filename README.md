@@ -41,13 +41,12 @@ To run the application, you'll need the following software installed on your sys
 1. Clone this repository to your local machine:
 
    ```bash
-   git clone https://github.com/njs0710/task-management-app.git
+   git clone https://github.com/njs0710/task-management.git
 
 2. Navigate to the project directory.
    
     ```bash
-   cd task-management-app
-
+   cd task-management
 
 4. Build the Spring Boot backend and Angular frontend in Docker and Run the Container
 
