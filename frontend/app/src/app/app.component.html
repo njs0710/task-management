@@ -1,0 +1,116 @@
+<div class="task-section mb-5">
+  <div class="container-sm mt-4">
+    <div class="page-header mb-3">
+      <p class="h1 text-center mt-3 mb-4 pb-3 text-primary">
+        <i class="bi bi-check-square-fill me-1"></i>
+        Task Management App
+      </p>
+    </div>
+
+    <div class="mb-4">
+      <div class="input-group">
+        <input autofocus  placeholder="New Task Name" aria-label="New Task" aria-describedby="new-task-button" type="text"
+          [(ngModel)]="newTaskName" placeholder="New Task" (keydown.enter)="createTask()" class="form-control" />
+          
+          <select [value]="'NORMAL'" #priorities (change)="onPrioritySelected(priorities.value)" id="priority" data-live-search="true" title="Priority" class="form-select"  style="width:100px;">
+            <option value="URGENT"><i class="bi bi-funnel"></i>High Priority</option>
+            <option value="NORMAL"><i class="bi bi-funnel"></i>Normal Priority</option>
+            <option value="LOW" ><i class="bi bi-funnel"></i>Low Priority</option>
+          </select>
+
+          <button id="new-task-button" (click)="createTask()" class="btn btn-primary" [disabled]="newTaskName.trim() === ''"
+            data-mdb-ripple-color="dark">Add Task
+          </button>
+      </div>
+    </div>
+
+    <hr class="my-4">
+
+    <div class="d-flex justify-content-end align-items-center mb-2 pb-3">
+      <p class="small mb-0 me-2 text-muted">Filter</p>
+      <select #filters [value]="filterTasks" (change)="onFilterSelected(filters.value)"  class="form-select form-select-filter">
+        <option value="ALL">All</option>
+        <option value="ACTIVE">Active</option>
+        <option value="COMPLETED">Completed</option>
+        <option value="URGENT">High Priority</option>
+        <option value="NORMAL">Normal Priority</option>
+        <option value="LOW">Low Priority</option>
+      </select>
+      <p class="small mb-0 ms-4 me-2 text-muted">Sort</p>
+      <select #sortOrder [value]="sortTasks" (change)="onSortOrderSelected(sortOrder.value)" class="form-select form-select-filter">
+        <option value="DATEADDED">Added date</option>
+        <option value="PRIORITY">Priority</option>
+      </select>
+    </div>
+
+
+    <ul *ngFor="let task of visibleTasks; let i = index" [attr.data-index]="i" class="list-group list-group-horizontal rounded-0 mb-2">
+      <li class="list-group-item d-flex align-items-center ps-0 pe-3 py-1 rounded-0 border-0 bg-transparent">
+        <div class="form-check">
+          <input  autofocus [(ngModel)]="task.done" (change)="saveTaskStatus(task)" class="form-check-input me-0" type="checkbox" value="" id="taskcheckbox{{i}}" aria-label="..." checked />
+        </div>
+      </li>
+
+      <li style="max-height: 46px;"  *ngIf="!isEditing(task)"  class="list-group-item px-3 py-1 d-flex align-items-center flex-grow-1 border-0 bg-transparent">
+        <div (click)="startEditing(task)">
+        <p class="lead fw-normal mb-0" >{{ task.name }}</p>
+        </div>
+      </li>
+
+      <li style="max-height: 46px;" *ngIf="isEditing(task)" class="list-group-item px-3 py-1 d-flex align-items-center flex-grow-1 border-0 bg-transparent">
+        <input  #editTask class="form-control lead-input fw-normal" type="text" [(ngModel)]="task.name" (keydown.enter)="updateTask(task)"  >
+      </li>
+
+      <li *ngIf="task.priority=='URGENT'" class="list-group-item px-3 py-1 d-flex align-items-center border-0 bg-transparent">
+        <div (click)="toogleTaskPriority(task)"  role="button" style="min-width: 106px"
+          class="py-2 px-3 me-2 border border-light rounded-3 d-flex align-items-center bg-light">
+          <p class="small mb-0 user-select-none">
+            <a href="#!" data-mdb-toggle="tooltip" title="Priority">
+              <i class="bi bi-chevron-double-up me-2 text-danger" ></i>
+            </a>
+            High
+          </p>
+        </div>
+      </li>
+
+      <li *ngIf="task.priority=='NORMAL'" class="list-group-item px-3 py-1 d-flex align-items-center border-0 bg-transparent">
+        <div (click)="toogleTaskPriority(task)" role="button" style="min-width: 106px"
+          class="py-2 px-3 me-2 border border-light rounded-3 d-flex align-items-center bg-light">
+          <p class="small mb-0 user-select-none">
+            <a href="#!" data-mdb-toggle="tooltip" title="Priority">
+              <i class="bi bi-list me-2 text-warning"></i>
+            </a>
+            Normal
+          </p>
+        </div>
+      </li>
+
+      <li *ngIf="task.priority=='LOW'" class="list-group-item px-3 py-1 d-flex align-items-center border-0 bg-transparent">
+        <div (click)="toogleTaskPriority(task)" role="button" style="min-width: 106px"
+          class="py-2 px-3 me-2 border border-light rounded-3 d-flex align-items-center bg-light">
+          <p class="small mb-0 user-select-none">
+            <a href="#!" data-mdb-toggle="tooltip" title="Priority">
+              <i class="bi bi-chevron-double-down me-2 text-info"></i>
+            </a>
+            Low
+          </p>
+        </div>
+      </li>
+
+      <li class="list-group-item me-3 ps-3 pe-0 py-1 rounded-0 border-0 bg-transparent d-flex align-items-center">
+        <div class="text-end text-muted">
+          <p class="small mb-0"><i class="bi bi-info-circle-fill me-2"></i>{{ (task.created*1000) | date: 'MMM d, y'}}</p>
+        </div>
+      </li>
+
+
+      <li class="list-group-item ps-3 pe-0 py-1 rounded-0 border-0 bg-transparent d-flex align-items-center">
+        <div class="d-flex flex-row justify-content-end align-items-center mb-1">
+          <a *ngIf="isEditing(task)" (click)="updateTask(task)" href="#!" class="text-info" data-mdb-toggle="tooltip" title="Save task name"><i class="bi bi-check2 me-3"></i></a>
+          <a *ngIf="!isEditing(task)" (click)="startEditing(task)" href="#!" class="text-info" data-mdb-toggle="tooltip" title="Edit task name"><i class="bi bi-pen me-3"></i></a>
+          <a (click)="deleteTask(task)" href="#!" class="text-danger" data-mdb-toggle="tooltip" title="Delete task"><i class="bi bi-trash"></i></a>
+        </div>
+      </li>
+    </ul>
+  </div>
+</div>

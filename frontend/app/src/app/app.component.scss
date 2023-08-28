@@ -1,0 +1,49 @@
+.task-section  { background-color: #eff1f2; }
+
+.task-button{
+  margin-top:-4px;
+  margin-bottom:2px;
+}
+
+.input-group>.form-select2 {
+  position: relative;
+  flex: 1 1 auto;
+  width: 1%;
+  min-width: 0;
+}
+
+.input-group>.form-select {
+  width: 170px;
+  flex: 0 0 170px;
+}
+
+li  .task-items > .btn  {
+  visibility: hidden!important; 
+  opacity: 0;
+  transition: visibility 0s, opacity 1s linear;
+}
+
+li:hover  .task-items > .btn { 
+  visibility:visible!important;
+  opacity: 1;
+  transition: visibility 0s, opacity 0.2s linear;
+}
+
+.form-select-filter {
+  width:auto;
+}
+
+.readonly-input{
+  padding-left:7px;
+}
+
+
+.lead-input {
+  font-weight: 400!important;
+  font-size: 1.25rem!important;
+}
+
+.border-radius-left{
+  border-top-left-radius: var(--bs-border-radius)!important;
+  border-bottom-left-radius: var(--bs-border-radius)!important;
+}
