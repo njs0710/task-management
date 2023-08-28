@@ -56,6 +56,7 @@ To run the application, you'll need the following software installed on your sys
 ## Usage
 
 Angular Frontend: \task-management\frontend\app
+
 Spring Boot Backend (Maven): \task-management\backend 
 
 Access the web application in your browser at `http://localhost:4200`.
