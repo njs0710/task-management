@@ -2,7 +2,7 @@
 
 A simple Task-Management Web Application built using Spring Boot, Angular, PostgreSQL, and Maven.
 
-![Task-Management Application](https://github.com/njs0710/task-management/blob/master/image.png?raw=true)
+![Task-Management Application](https://github.com/njs0710/task-management/blob/main/image.png?raw=true)
 
 ## Table of Contents
 
