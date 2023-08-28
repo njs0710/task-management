@@ -59,7 +59,7 @@ Angular Frontend: \task-management\frontend\app
 
 Spring Boot Backend (Maven): \task-management\backend 
 
-Access the web application in your browser at `http://localhost:4200`.
+Access the web application in your browser: `http://localhost:4200`.
 
 ## Technologies Used
 
